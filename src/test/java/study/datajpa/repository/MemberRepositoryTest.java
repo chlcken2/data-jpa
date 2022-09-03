@@ -43,4 +43,17 @@ class MemberRepositoryTest {
         Assertions.assertThat(deletedCount).isEqualTo(0);
 
     }
+
+    @Test
+    public void testQuery() {
+        Member m1 = new Member("aaa", 10);
+        Member m2 = new Member("bbbb", 20);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> result = memberRepository.findUser("aaa", 10);
+        Assertions.assertThat(result.get(0)).isEqualTo(m1);
+
+    }
 }
