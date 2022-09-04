@@ -10,6 +10,7 @@ import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.servlet.FilterChain;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
@@ -92,4 +93,17 @@ class MemberRepositoryTest {
             System.out.println("member = " + member);
         }
     }
+
+    @Test
+    public void returnType() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        Member findMember= memberRepository.findMemberByUsername("AAA");
+        System.out.println("findMember = " + findMember);
+    }
+
 }
