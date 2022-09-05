@@ -10,10 +10,13 @@ import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.FilterChain;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 @SpringBootTest
@@ -25,6 +28,8 @@ class MemberRepositoryTest {
     @Autowired
     TeamRepository teamRepository;
 
+    @PersistenceContext
+    private EntityManager em;
     @Test
     public void basicCRUD() {
         Member member1 = new Member("member1");
@@ -106,4 +111,16 @@ class MemberRepositoryTest {
         System.out.println("findMember = " + findMember);
     }
 
+    @Test
+    public void queryHint() {
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+        em.flush();
+
+    }
 }
