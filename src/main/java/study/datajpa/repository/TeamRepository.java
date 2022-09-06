@@ -1,42 +1,112 @@
 package study.datajpa.repository;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import study.datajpa.entity.Member;
-import study.datajpa.entity.Team;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
-@Repository
+public interface TeamRepository extends MemberRepository{
 
-public class TeamRepository {
+    @Override
+    List<Member> findAll();
 
-    @PersistenceContext
-    private EntityManager em;
+    @Override
+    List<Member> findAll(Sort sort);
 
-    public Team save(Team team) {
-        em.persist(team);
-        return team;
+    @Override
+    List<Member> findAllById(Iterable<Long> longs);
+
+    @Override
+    <S extends Member> List<S> saveAll(Iterable<S> entities);
+
+    @Override
+    void flush();
+
+    @Override
+    <S extends Member> S saveAndFlush(S entity);
+
+    @Override
+    <S extends Member> List<S> saveAllAndFlush(Iterable<S> entities);
+
+    @Override
+    default void deleteInBatch(Iterable<Member> entities) {
+        MemberRepository.super.deleteInBatch(entities);
     }
 
-    public void delete(Team team) {
-        em.remove(em);
-    }
+    @Override
+    void deleteAllInBatch(Iterable<Member> entities);
 
-    public List<Team> findAll() {
-        return em.createQuery("select t from Team t", Team.class)
-                .getResultList();
-    }
+    @Override
+    void deleteAllByIdInBatch(Iterable<Long> longs);
 
-    public Optional<Team> findById(Long id) {
-        Team team = em.find(Team.class, id);
-        return Optional.ofNullable(team);
-    }
+    @Override
+    void deleteAllInBatch();
 
-    public long count() {
-        return em.createQuery("select count(t) from Team t", long.class)
-                .getSingleResult();
-    }
+    @Override
+    Member getOne(Long aLong);
+
+    @Override
+    Member getById(Long aLong);
+
+    @Override
+    Member getReferenceById(Long aLong);
+
+    @Override
+    <S extends Member> List<S> findAll(Example<S> example);
+
+    @Override
+    <S extends Member> List<S> findAll(Example<S> example, Sort sort);
+
+    @Override
+    Page<Member> findAll(Pageable pageable);
+
+    @Override
+    <S extends Member> S save(S entity);
+
+    @Override
+    Optional<Member> findById(Long aLong);
+
+    @Override
+    boolean existsById(Long aLong);
+
+    @Override
+    long count();
+
+    @Override
+    void deleteById(Long aLong);
+
+    @Override
+    void delete(Member entity);
+
+    @Override
+    void deleteAllById(Iterable<? extends Long> longs);
+
+    @Override
+    void deleteAll(Iterable<? extends Member> entities);
+
+    @Override
+    void deleteAll();
+
+    @Override
+    <S extends Member> Optional<S> findOne(Example<S> example);
+
+    @Override
+    <S extends Member> Page<S> findAll(Example<S> example, Pageable pageable);
+
+    @Override
+    <S extends Member> long count(Example<S> example);
+
+    @Override
+    <S extends Member> boolean exists(Example<S> example);
+
+    @Override
+    <S extends Member, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
+
+
 }

@@ -1,6 +1,5 @@
 package study.datajpa.repository;
 
-import org.apache.catalina.LifecycleState;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,8 @@ import study.datajpa.entity.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.FilterChain;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 
 @SpringBootTest
@@ -26,7 +22,7 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
-    TeamRepository teamRepository;
+    TeamJpaRepository teamRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -121,6 +117,11 @@ class MemberRepositoryTest {
         Member findMember = memberRepository.findReadOnlyByUsername("member1");
         findMember.setUsername("member2");
         em.flush();
+    }
+
+    @Test
+    public void callCustom() {
+        List<Member> result = memberRepository.findMemberCustom();
 
     }
 }
