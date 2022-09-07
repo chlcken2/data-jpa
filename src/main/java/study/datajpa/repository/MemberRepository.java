@@ -42,6 +42,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> , MemberRe
     Page<Member> findByAge(int age, Pageable pageable);
 
     @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = " true"))
-    Member findReadOnlyByUsername(String uesrname);
+    Member findReadOnlyByUsername(String username);
 
 }
